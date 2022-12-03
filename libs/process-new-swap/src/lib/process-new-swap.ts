@@ -9,5 +9,5 @@ export function processNewSwap(data: any): any {
   fs.writeFile('helloworld.txt', newData, function (err) {
     if (err) return err;
   });
-  return "success";
+  return { hex, data };
 }

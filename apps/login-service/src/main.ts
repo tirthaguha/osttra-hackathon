@@ -9,6 +9,15 @@ import * as jwt from "jsonwebtoken"
 
 import { validateAuth, orgData, otherOrgs } from '@osttra-hackathon/validate-auth';
 import { processNewSwap } from '@osttra-hackathon/process-new-swap';
+import * as mysql from 'mysql';
+
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'simpleapi'
+})
+
 
 const secret = "2cbac2c8-d00f-4fd4-b6f1-f974aa88753d"
 
@@ -52,8 +61,26 @@ app.post("/new-swap", (req, res) => {
   const { org } = jwt.verify(token, secret);
 
   console.log(data);
-  processNewSwap(data);
-  res.send({ message: "success" });
+  const newdata = processNewSwap(data);
+
+  const sql = `INSERT INTO SwapContract(creationTime, updateTime, contract, hexcode, version) VALUES (?)`;
+
+  const values = [
+    Date.now(),
+    Date.now(),
+    newdata.data,
+    newdata.hex,
+    1
+  ];
+
+  db.query(sql, [values], function (err, data, fields) {
+    if (err) throw err;
+    res.json({
+      status: 200,
+      message: "New user added successfully"
+    })
+  })
+  // res.send({ message: "success" });
 });
 
 app.post("/swap-data", (req, res) => {
