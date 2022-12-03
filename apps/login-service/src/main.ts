@@ -8,6 +8,7 @@ import * as path from 'path';
 import * as jwt from "jsonwebtoken"
 
 import { validateAuth, orgData, otherOrgs } from '@osttra-hackathon/validate-auth';
+import { processNewSwap } from '@osttra-hackathon/process-new-swap';
 
 const secret = "2cbac2c8-d00f-4fd4-b6f1-f974aa88753d"
 
@@ -43,14 +44,24 @@ app.post("/org-list", (req, res) => {
     org, orgData
   }
   res.send(resData);
-})
+});
+
+
+app.post("/new-swap", (req, res) => {
+  const { token, data } = req.body;
+  const { org } = jwt.verify(token, secret);
+
+  console.log(data);
+  processNewSwap(data);
+  res.send({ message: "success" });
+});
 
 app.post("/swap-data", (req, res) => {
   const data = [
-    { creator: 'Morgan Stanley', actionParty: 'Bank Of America', tenor: 'default', swaptype: 'Equity', creationTime: 'Today', status: "awaiting affirmation" },
-    { creator: 'Morgan Stanley', actionParty: 'Wells Fargo', tenor: 'default', swaptype: 'Equity', creationTime: 'Today', status: "awaiting affirmation" },
-    { creator: 'Morgan Stanley', actionParty: 'JP Morgan Chase', tenor: 'default', swaptype: 'Equity', creationTime: 'Today', status: "accepted" },
-    { creator: 'Wells Fargo', actionParty: 'Morgan Stanley', tenor: 'default', swaptype: 'Equity', creationTime: 'Today', status: "awaiting affirmation" }
+    { creator: 'Morgan Stanley', swapId: "EB5702", actionParty: 'Bank Of America', tenor: 'default', swaptype: 'Equity', creationTime: 'Today', status: "awaiting affirmation" },
+    { creator: 'Morgan Stanley', swapId: "EB5701", actionParty: 'Wells Fargo', tenor: 'default', swaptype: 'Equity', creationTime: 'Today', status: "awaiting affirmation" },
+    { creator: 'Morgan Stanley', swapId: "EB5706", actionParty: 'JP Morgan Chase', tenor: 'default', swaptype: 'Equity', creationTime: 'Today', status: "accepted" },
+    { creator: 'Wells Fargo', swapId: "EB5707", actionParty: 'Morgan Stanley', tenor: 'default', swaptype: 'Equity', creationTime: 'Today', status: "awaiting affirmation" }
   ]
   res.send(data);
 })

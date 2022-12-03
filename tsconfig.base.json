@@ -15,6 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@osttra-hackathon/process-new-swap": [
+        "libs/process-new-swap/src/index.ts"
+      ],
       "@osttra-hackathon/validate-auth": ["libs/validate-auth/src/index.ts"]
     }
   },

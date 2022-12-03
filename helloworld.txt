@@ -1,0 +1,1 @@
+{"creator":"Morgan Stanley","actionParty":"Morgan Stanley","swapID":"","tenor":"1 year","swaptype":"Equity","creationTime":"Today","createTime":1670049138914,"status":"Pending"}  a6e29beffe3a5cfedab6d1f9629e5d4b9ca6e02b7af51ce5f648e88bbdebd1bb
